@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Vue 3 Conference Planner</title>
+    <!-- Import Styles -->
+    <link rel="stylesheet" href="./assets/styles.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" crossorigin="anonymous" />    <!-- Import Vue.js -->
+    <script src="https://unpkg.com/vue@next"></script>
+  </head>
+  <body>
+    <div id="app">
+      <div class="nav-bar"></div>
+      <div class="product-display">
+        <div class="product-container">
+          <div class="product-image">
+            <a :href="url"><img v-bind:src="logo"></a>
+          </div>
+          <div class="product-info">
+            <h1>{{ name }}</h1>
+            <p>{{ description }}</p>
+            <p>{{ startDate }}</p>
+            <p><a :href="url">Homepage</a></p>
+            <p>Kommentar: {{ comment }}<br/><input v-model="comment"></p>
+            <div v-if="new Date() <= date">Noch {{ Math.floor(( date - new Date() ) / 86400000) }} Tage</div>
+            <div v-else>Die Veranstaltung liegt in der Vergangenheit!</div>
+          </div>
+        </div>
+      </div>
+      <ul>
+        <div>
+          <input type="checkbox" v-model="filterOnlyStarred" id="onlyFavorites" />
+          <label for="onlyFavorites">Nur Favoriten ({{ numberOfStarred }})</label>
+        </div>
+        <li v-for="event, index in events" :key="event.id">
+          <span @click="toggleDetails(index)">{{ event.title }}</span>
+          &nbsp;<i v-on:click="toggleStar(index)" style="color:red;" class="fa-star" :class="[event.favorite ? 'fas' : 'far']"></i>
+          <event-details v-show="event.showDetails" :event="event"></event-details>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Import Js -->
+    <script src="./main.js"></script>
+    <!-- Import Components -->
+    <script src="./components/EventDetails.js"></script>
+    <script>
+      const mountedApp = app.mount('#app')
+    </script>
+  </body>
+</html>
